@@ -10,7 +10,30 @@ I will focus on:
 * Model Predictive Control
 * Monte Carlo Simulations
 
-I plan to use [CasADi](https://web.casadi.org/) to faciliate my learning experience. This repository will contain example code from their [examaple repo](https://github.com/casadi/casadi/tree/master/docs/examples/python) and other ideas I come up with.
+I plan to use Python and the [CasADi](https://web.casadi.org/) library to faciliate my learning experience. This repository will contain example code from their [examaple repo](https://github.com/casadi/casadi/tree/master/docs/examples/python) and any other ideas I come up with.
+
+## Optimal Control Review
+
+* Trajectory Optimization
+  * Control as a function of time
+  * Single initial state
+  * Types
+    * Direct Methods
+      * Solve a non-linear program
+      * Widely used in practice
+    * Indirect Methods
+      * Solve non-linear root finding problem
+      * Rarely used in practice
+* Policy Optimization
+  * Control as a function of state
+  * Arbitrary initial state
+  * Types
+    * Heuristic Optimization
+      * Parameter optimization
+      * Arbitrary objective function
+    * Dynamic Programming
+      * Partial differential equation
+      * Dynamics and objective are function of state and control
 
 ## Trajectory Optimization
 
