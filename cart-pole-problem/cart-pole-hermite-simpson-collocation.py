@@ -65,15 +65,29 @@ xk1 = x[:,1:]
 uk = u[:-1]
 uk1 = u[1:]
 
-fk = f(xk,uk)
-fk1 = f(xk1,uk1)
-uc = (uk + uk1)/2
-xc = 1/2 * (xk + xk1) + h_k/8 * (fk - fk1)
-fc = f(xc,uc)
+# Setup for Hermite-Simpson collocation
+# 
+#   h_k = t_{k+1} - t_k
+#   x_{k+1} - x_k = (1/6)*h_k*(f_k + 4*f_{k+(1/2)} + f_{k+1})       (1)
+#   x_{k+(1/2)} = (1/2)*(x_k + x_{k+1}) + (h_k/8)*(f_k - f_{k+1})   (2)
+# 
 
+fk = f(xk,uk)           # collocation point at x_k
+fk1 = f(xk1,uk1)        # collocation point at x_{k+1}
+
+# Mid-point collocation point
+uc = (uk + uk1)/2       # calculation of u_{k+(1/2)}
+xc = 1/2 * (xk + xk1) + h_k/8 * (fk - fk1)  # x_{k+(1/2)}
+fc = f(xc,uc)           # collocation point at f_{k+(1/2)}
+
+# When a separate decision variable is created for x_{k+(1/2)}
+# and (1) & (2) is used as constraints equations is said to be
+# in `separated  form`, when it's combined into one constraint
+# it's called `compressed form`.
+
+# Simpson quadrature constraint in `compressed form`
 G = xk-xk1 + h_k/6*(fk + 4*fc + fk1)
-opti.subject_to(G==0) # Add interpolation constraint
-
+opti.subject_to(G==0)   # Add interpolation constraint
 
 # Add path constraints
 opti.subject_to(q1 < dmax)
