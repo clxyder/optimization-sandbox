@@ -18,8 +18,9 @@ from casadi import (
 
 # %%
 # Constants
-N = 20          # number of control intervals
+N = 10          # number of control intervals
 T = 2           # (s) time horizon
+dt = T/(N)      # (s) time step
 g = 9.81        # (m/s^2) acceleration of gravtity on earth
 l = 0.5         # (m) length of the pole
 m1 = 1          # (kg) mass of the cart
@@ -66,7 +67,7 @@ dae = {
     'quad': L,
 }
 opts = {
-    'tf': T/N,
+    'tf': dt,
 }
 
 I = integrator('I', 'cvodes', dae, opts)
@@ -166,11 +167,13 @@ plt.subplot(311)
 plt.title('States and Control Law')
 plt.plot(tgrid, q1_opt, '-')
 plt.legend(['q1'])
+plt.ylim([-0.5, 1.5])
 plt.grid()
 
 plt.subplot(312)
 plt.plot(tgrid, q2_opt, '-')
 plt.legend(['q2'])
+plt.ylim([-2, 4])
 plt.grid()
 xlim = plt.xlim()
 
@@ -178,6 +181,7 @@ plt.subplot(313)
 plt.plot(tgrid, np.vstack([np.nan, u_opt]), '-.')
 plt.xlabel('t')
 plt.xlim(xlim)
+plt.ylim([-20, 10])
 plt.legend(['u'])
 plt.grid()
 
