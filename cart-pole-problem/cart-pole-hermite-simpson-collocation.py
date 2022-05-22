@@ -55,15 +55,16 @@ q2 = x[1,:]
 q1dot = x[2,:]
 q2dot = x[3,:]
 
-# Objective function
-J = h_k/2*ca.sum2(ca.power(u[:-1],2) + ca.power(u[1:],2))
-opti.minimize(J)
-
 # Interpolation constraint symbolic expressions
 xk = x[:,:-1]
 xk1 = x[:,1:]
 uk = u[:-1]
 uk1 = u[1:]
+uc = (uk + uk1)/2       # calculation of u_{k+(1/2)}
+
+# Objective function
+J = (h_k/6)*ca.sum2(uk**2 + 4*(uc**2) + uk1**2)
+opti.minimize(J)
 
 # Setup for Hermite-Simpson collocation
 # 
@@ -76,7 +77,6 @@ fk = f(xk,uk)           # collocation point at x_k
 fk1 = f(xk1,uk1)        # collocation point at x_{k+1}
 
 # Mid-point collocation point
-uc = (uk + uk1)/2       # calculation of u_{k+(1/2)}
 xc = 1/2 * (xk + xk1) + h_k/8 * (fk - fk1)  # x_{k+(1/2)}
 fc = f(xc,uc)           # collocation point at f_{k+(1/2)}
 
